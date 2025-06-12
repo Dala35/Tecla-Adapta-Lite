@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tecla Adapta Lite – Trilingue</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      margin: 0; padding: 0;
+      display: flex; flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    header {
+      background: #008080;
+      color: white;
+      padding: 1rem;
+      width: 100%;
+      text-align: center;
+    }
+
+    select, button {
+      margin: 1rem;
+      padding: 0.7rem 1.2rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 5px;
+    }
+
+    #output {
+      background: #fff;
+      margin: 2rem;
+      padding: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      width: 80%;
+      max-width: 600px;
+      text-align: center;
+      font-size: 1.2rem;
+    }
+
+    .controls {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Tecla Adapta Lite – Trilingue</h1>
+    <p>Comunicação Assistida: Português | English | Cokwe</p>
+  </header>
+
+  <div class="controls">
+    <label for="language">Escolha o idioma / Choose language:</label>
+    <select id="language">
+      <option value="pt">Português</option>
+      <option value="en">English</option>
+      <option value="ck">Cokwe (Beta)</option>
+    </select>
+
+    <button onclick="generateMessage()">🔊 Falar / Speak</button>
+  </div>
+
+  <div id="output">Mensagem aparecerá aqui / Message will appear here</div>
+
+  <script>
+    const messages = {
+      pt: [
+        "Quero brincar.",
+        "Estou com fome.",
+        "Preciso de ajuda.",
+        "Posso cantar?",
+        "Quero fazer teatro.",
+        "Estou feliz!",
+        "Quero descansar."
+      ],
+      en: [
+        "I want to play.",
+        "I'm hungry.",
+        "I need help.",
+        "Can I sing?",
+        "I want to act.",
+        "I am happy!",
+        "I want to rest."
+      ],
+      ck: [
+        "Ndapandula.",             // Obrigado
+        "Ndina lutwe.",            // Estou com dor
+        "Ngenda kulya.",           // Quero comer
+        "Nataka kuimba.",          // Quero cantar
+        "Ngenda kusamba.",         // Quero brincar
+        "Ndina lusu.",             // Estou feliz
+        "Ngenda kukwata."          // Quero descansar
+      ]
+    };
+
+    function generateMessage() {
+      const lang = document.getElementById("language").value;
+      const msgList = messages[lang];
+      const randomIndex = Math.floor(Math.random() * msgList.length);
+      const selected = msgList[randomIndex];
+
+      document.getElementById("output").textContent = selected;
+
+      const synth = window.speechSynthesis;
+      const utter = new SpeechSynthesisUtterance(selected);
+      if (lang === "pt") utter.lang = "pt-PT";
+      if (lang === "en") utter.lang = "en-US";
+      if (lang === "ck") utter.lang = "pt-PT"; // fallback for Cokwe voice
+      synth.speak(utter);
+    }
+  </script>
+</body>
+</html>
