@@ -1,99 +1,146 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Tecla Adapta Lite – Cokwe</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tecla Adapta Lite 2.0</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background: #f3f6fb;
+      font-family: 'Segoe UI', sans-serif;
+      background: #f5f8fa;
+      color: #333;
       margin: 0;
       padding: 20px;
       text-align: center;
     }
 
     h1 {
-      color: #2c3e50;
-    }
-
-    .grid {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 15px;
-      margin-top: 30px;
-    }
-
-    .card {
-      width: 180px;
-      height: 160px;
-      border-radius: 15px;
-      padding: 15px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      cursor: pointer;
-      transition: transform 0.2s;
-      font-size: 16px;
-    }
-
-    .card:hover {
-      transform: scale(1.05);
-    }
-
-    .emoji {
-      font-size: 35px;
+      font-size: 28px;
       margin-bottom: 10px;
     }
 
-    .orange { background-color: #ffe0b2; }
-    .blue { background-color: #bbdefb; }
-    .green { background-color: #dcedc8; }
-    .red { background-color: #ffcdd2; }
-    .purple { background-color: #e1bee7; }
-    .yellow { background-color: #fff9c4; }
+    #language-switcher {
+      margin-bottom: 20px;
+    }
+
+    select {
+      padding: 6px;
+      font-size: 16px;
+    }
+
+    .emoji-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: 16px;
+      max-width: 700px;
+      margin: auto;
+    }
+
+    .emoji-card {
+      background: white;
+      border: 2px solid #ccc;
+      border-radius: 12px;
+      padding: 20px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .emoji-card:hover {
+      background: #d0f0ff;
+      border-color: #00aaff;
+    }
+
+    .emoji {
+      font-size: 40px;
+      display: block;
+    }
+
+    .label {
+      margin-top: 10px;
+      font-size: 16px;
+    }
+
+    footer {
+      margin-top: 40px;
+      font-size: 14px;
+      color: #777;
+    }
   </style>
 </head>
 <body>
 
-  <h1>Tecla Adapta Lite – Expressão em Cokwe</h1>
+  <h1 id="title">Tecla Adapta Lite</h1>
 
-  <div class="grid">
-    <div class="card orange" onclick="speak('Nguli nhi sala')">
-      <div class="emoji">🍽️</div>
-      Nguli nhi sala<br><small>(Estou com fome)</small>
-    </div>
-    <div class="card blue" onclick="speak('Nguna zanga kupomba')">
-      <div class="emoji">😴</div>
-      Nguna zanga kupomba<br><small>(Quero dormir)</small>
-    </div>
-    <div class="card green" onclick="speak('Ngunevu Txisseke')">
-      <div class="emoji">😄</div>
-      Ngunevu Txisseke<br><small>(Estou feliz)</small>
-    </div>
-    <div class="card red" onclick="speak('Ngukwasse')">
-      <div class="emoji">🆘</div>
-      Ngukwasse<br><small>(Preciso de ajuda)</small>
-    </div>
-    <div class="card purple" onclick="speak('Nguna zanga kulinga teatro')">
-      <div class="emoji">🎭</div>
-      Nguna zanga kulinga teatro<br><small>(Quero fazer teatro)</small>
-    </div>
-    <div class="card yellow" onclick="speak('Nguna zangue Kuhreraa')">
-      <div class="emoji">🧸</div>
-      Nguna zangue Kuhreraa<br><small>(Quero brincar)</small>
-    </div>
+  <div id="language-switcher">
+    <label for="lang-select">🌍 Escolher idioma / Choose language:</label>
+    <select id="lang-select" onchange="switchLanguage()">
+      <option value="cokwe">Cokwe</option>
+      <option value="pt">Português</option>
+      <option value="en">English</option>
+    </select>
   </div>
 
+  <div class="emoji-grid" id="emoji-grid">
+    <!-- Os botões serão inseridos via JS -->
+  </div>
+
+  <footer>
+    Desenvolvido por Dala De Carvalho – DALA CURE OS · Versão TECLA 2.0
+  </footer>
+
   <script>
-    function speak(text) {
-      const msg = new SpeechSynthesisUtterance();
-      msg.text = text;
-      msg.lang = 'pt-PT'; // Suporte principal. Podemos ajustar manualmente.
-      speechSynthesis.speak(msg);
+    const phrases = {
+      pt: [
+        { emoji: "🍽️", text: "Estou com fome" },
+        { emoji: "😴", text: "Quero dormir" },
+        { emoji: "😊", text: "Estou feliz" },
+        { emoji: "🎭", text: "Quero fazer teatro" },
+        { emoji: "🆘", text: "Preciso de ajuda" },
+        { emoji: "⚽", text: "Quero brincar" }
+      ],
+      en: [
+        { emoji: "🍽️", text: "I'm hungry" },
+        { emoji: "😴", text: "I want to sleep" },
+        { emoji: "😊", text: "I'm happy" },
+        { emoji: "🎭", text: "I want to do theatre" },
+        { emoji: "🆘", text: "I need help" },
+        { emoji: "⚽", text: "I want to play" }
+      ],
+      cokwe: [
+        { emoji: "🍽️", text: "Nguli nhi sala" },
+        { emoji: "😴", text: "Nguna zanga kupomba" },
+        { emoji: "😊", text: "Ngunevu Txisseke" },
+        { emoji: "🎭", text: "Nguna zanga kulinga teatro" },
+        { emoji: "🆘", text: "Ngukwasse" },
+        { emoji: "⚽", text: "Nguna zangue Kuhreraa" }
+      ]
+    };
+
+    function switchLanguage() {
+      const lang = document.getElementById("lang-select").value;
+      renderGrid(lang);
     }
+
+    function renderGrid(language) {
+      const grid = document.getElementById("emoji-grid");
+      grid.innerHTML = "";
+      phrases[language].forEach(item => {
+        const card = document.createElement("div");
+        card.className = "emoji-card";
+        card.onclick = () => speak(item.text);
+        card.innerHTML = `<span class="emoji">${item.emoji}</span><span class="label">${item.text}</span>`;
+        grid.appendChild(card);
+      });
+    }
+
+    function speak(text) {
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = "pt-PT"; // ou ajustar com base na língua
+      window.speechSynthesis.speak(utterance);
+    }
+
+    // Inicializar
+    renderGrid("cokwe");
   </script>
 </body>
 </html>
