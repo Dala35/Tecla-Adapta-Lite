@@ -1,119 +1,98 @@
 <!DOCTYPE html>
 <html lang="pt">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Tecla Adapta Lite – Trilingue</title>
+  <meta charset="UTF-8">
+  <title>Tecla Adapta Lite – Cokwe</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #f4f4f4;
-      margin: 0; padding: 0;
-      display: flex; flex-direction: column;
-      align-items: center;
+      background: #f3f6fb;
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+    }
+
+    h1 {
+      color: #2c3e50;
+    }
+
+    .grid {
+      display: flex;
+      flex-wrap: wrap;
       justify-content: center;
-      min-height: 100vh;
+      gap: 15px;
+      margin-top: 30px;
     }
 
-    header {
-      background: #008080;
-      color: white;
-      padding: 1rem;
-      width: 100%;
-      text-align: center;
-    }
-
-    select, button {
-      margin: 1rem;
-      padding: 0.7rem 1.2rem;
-      font-size: 1rem;
-      border: none;
-      border-radius: 5px;
-    }
-
-    #output {
-      background: #fff;
-      margin: 2rem;
-      padding: 1rem;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      width: 80%;
-      max-width: 600px;
-      text-align: center;
-      font-size: 1.2rem;
-    }
-
-    .controls {
+    .card {
+      width: 180px;
+      height: 160px;
+      border-radius: 15px;
+      padding: 15px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
       display: flex;
       flex-direction: column;
+      justify-content: center;
       align-items: center;
+      cursor: pointer;
+      transition: transform 0.2s;
+      font-size: 16px;
     }
+
+    .card:hover {
+      transform: scale(1.05);
+    }
+
+    .emoji {
+      font-size: 35px;
+      margin-bottom: 10px;
+    }
+
+    .orange { background-color: #ffe0b2; }
+    .blue { background-color: #bbdefb; }
+    .green { background-color: #dcedc8; }
+    .red { background-color: #ffcdd2; }
+    .purple { background-color: #e1bee7; }
+    .yellow { background-color: #fff9c4; }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Tecla Adapta Lite – Trilingue</h1>
-    <p>Comunicação Assistida: Português | English | Cokwe</p>
-  </header>
 
-  <div class="controls">
-    <label for="language">Escolha o idioma / Choose language:</label>
-    <select id="language">
-      <option value="pt">Português</option>
-      <option value="en">English</option>
-      <option value="ck">Cokwe (Beta)</option>
-    </select>
+  <h1>Tecla Adapta Lite – Expressão em Cokwe</h1>
 
-    <button onclick="generateMessage()">🔊 Falar / Speak</button>
+  <div class="grid">
+    <div class="card orange" onclick="speak('Nguli nhi sala')">
+      <div class="emoji">🍽️</div>
+      Nguli nhi sala<br><small>(Estou com fome)</small>
+    </div>
+    <div class="card blue" onclick="speak('Nguna zanga kupomba')">
+      <div class="emoji">😴</div>
+      Nguna zanga kupomba<br><small>(Quero dormir)</small>
+    </div>
+    <div class="card green" onclick="speak('Ngunevu Txisseke')">
+      <div class="emoji">😄</div>
+      Ngunevu Txisseke<br><small>(Estou feliz)</small>
+    </div>
+    <div class="card red" onclick="speak('Ngukwasse')">
+      <div class="emoji">🆘</div>
+      Ngukwasse<br><small>(Preciso de ajuda)</small>
+    </div>
+    <div class="card purple" onclick="speak('Nguna zanga kulinga teatro')">
+      <div class="emoji">🎭</div>
+      Nguna zanga kulinga teatro<br><small>(Quero fazer teatro)</small>
+    </div>
+    <div class="card yellow" onclick="speak('Nguna zangue Kuhreraa')">
+      <div class="emoji">🧸</div>
+      Nguna zangue Kuhreraa<br><small>(Quero brincar)</small>
+    </div>
   </div>
 
-  <div id="output">Mensagem aparecerá aqui / Message will appear here</div>
-
   <script>
-    const messages = {
-      pt: [
-        "Quero brincar.",
-        "Estou com fome.",
-        "Preciso de ajuda.",
-        "Posso cantar?",
-        "Quero fazer teatro.",
-        "Estou feliz!",
-        "Quero descansar."
-      ],
-      en: [
-        "I want to play.",
-        "I'm hungry.",
-        "I need help.",
-        "Can I sing?",
-        "I want to act.",
-        "I am happy!",
-        "I want to rest."
-      ],
-      ck: [
-        "Ndapandula.",             // Obrigado
-        "Ndina lutwe.",            // Estou com dor
-        "Ngenda kulya.",           // Quero comer
-        "Nataka kuimba.",          // Quero cantar
-        "Ngenda kusamba.",         // Quero brincar
-        "Ndina lusu.",             // Estou feliz
-        "Ngenda kukwata."          // Quero descansar
-      ]
-    };
-
-    function generateMessage() {
-      const lang = document.getElementById("language").value;
-      const msgList = messages[lang];
-      const randomIndex = Math.floor(Math.random() * msgList.length);
-      const selected = msgList[randomIndex];
-
-      document.getElementById("output").textContent = selected;
-
-      const synth = window.speechSynthesis;
-      const utter = new SpeechSynthesisUtterance(selected);
-      if (lang === "pt") utter.lang = "pt-PT";
-      if (lang === "en") utter.lang = "en-US";
-      if (lang === "ck") utter.lang = "pt-PT"; // fallback for Cokwe voice
-      synth.speak(utter);
+    function speak(text) {
+      const msg = new SpeechSynthesisUtterance();
+      msg.text = text;
+      msg.lang = 'pt-PT'; // Suporte principal. Podemos ajustar manualmente.
+      speechSynthesis.speak(msg);
     }
   </script>
 </body>
